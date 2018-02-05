@@ -34,6 +34,22 @@ class randomNode(OpenMayaMPx.MPxNode):
     # TODO:: declare the input and output class variables
     #         i.e. inNumPoints = OpenMaya.MObject()
     
+    inNumPoints = OpenMaya.MObject();
+
+    minX = OpenMaya.MObject();
+    minY = OpenMaya.MObject();
+    minZ = OpenMaya.MObject();
+
+    maxX = OpenMaya.MObject();
+    maxY = OpenMaya.MObject();
+    maxZ = OpenMaya.MObject();
+
+    minVec = OpenMaya.MObject();
+    maxVec = OpenMaya.MObject();
+
+    outPoints = OpenMaya.MObject();
+
+
     # constructor
     def __init__(self):
         OpenMayaMPx.MPxNode.__init__(self)
@@ -47,6 +63,36 @@ class randomNode(OpenMayaMPx.MPxNode):
         #         object containing the random points. Consult the homework
         #         sheet for how to deal with creating the MFnArrayAttrsData. 
 
+        if plug == randomNode.outPoints:
+        
+            inNumPointsData = data.inputValue(randomNode.inNumPoints);
+            inNumPointsValue = inNumPointsData.asFloat();
+            
+            minVecData = data.inputValue(randomNode.minVector);
+            minVecData = minVecData.asFloat3();   
+            maxVecData = data.inputValue(randomNode.maxVector);
+            maxVecData = maxVecData.asFloat3();
+
+            outPointsData = data.outputValue(randomNode.outPoints); 
+            outPointArrAttrData = OpenMaya.MFnArrayAttrsData(); 
+            outPointsObject = outPointArrAttrData.create();
+            
+            # Create the vectors for position and id
+            positionArr = outPointArrAttrData.vectorArray("position");
+            idArray = outPointArrAttrData.doubleArray("id");
+            
+            # Loop to fill the arrays: 
+            for num in range(0, inNumPointsValue):
+                sx = random.uniform(minVecData[0], maxVecData[0]);
+                sy = random.uniform(minVecData[1], maxVecData[1]);
+                sz = random.uniform(minVecData[2], maxVecData[2]);
+                
+                positionArr.append(OpenMaya.MVector(sx, sy, sz));
+                idArray.append(num);
+            
+            # Finally set the output data handle 
+            outPointsData.setMObject(outPointsObject);
+
         data.setClean(plug)
     
 # initializer
@@ -56,12 +102,44 @@ def nodeInitializer():
 
     # TODO:: initialize the input and output attributes. Be sure to use the 
     #         MAKE_INPUT and MAKE_OUTPUT functions.
+    
+    randomNode.inNumPoints = nAttr.create("numPoints", "n", OpenMaya.MFnNumericData.kFloat, 0.0);
+    MAKE_INPUT(nAttr);
 
+    randomNode.minX = nAttr.create("minX", "miX", OpenMaya.MFnNumericData.kFloat, 0.0);
+    MAKE_INPUT(nAttr);
+    randomNode.maxX = nAttr.create("maxX", "maX", OpenMaya.MFnNumericData.kFloat, 0.0);
+    MAKE_INPUT(nAttr);
+    randomNode.minY = nAttr.create("minY", "miY", OpenMaya.MFnNumericData.kFloat, 0.0);
+    MAKE_INPUT(nAttr);
+    randomNode.maxY = nAttr.create("maxY", "maY", OpenMaya.MFnNumericData.kFloat, 0.0);
+    MAKE_INPUT(nAttr);
+    randomNode.minZ = nAttr.create("minZ", "miZ", OpenMaya.MFnNumericData.kFloat, 0.0);
+    MAKE_INPUT(nAttr);
+    randomNode.maxZ = nAttr.create("maxZ", "maZ", OpenMaya.MFnNumericData.kFloat, 0.0);
+    MAKE_INPUT(nAttr);
+
+    randomNode.minVec = nAttr.create("minVector", "minV", randomNode.minX, randomNode.minY, randomNode.minZ)
+    MAKE_INPUT(nAttr);
+    randomNode.maxVec = nAttr.create("maxVector", "maxV", randomNode.maxX, randomNode.maxY, randomNode.maxZ)
+    MAKE_INPUT(nAttr);
+
+    randomNode.outPoints = tAttr.create("outPoints", "op", OpenMaya.MFnArrayAttrsData.kDynArrayAttrs)
+    MAKE_OUTPUT(tAttr);
 
     try:
         # TODO:: add the attributes to the node and set up the
         #         attributeAffects (addAttribute, and attributeAffects)
         print "Initialization!\n"
+
+        randomNode.addAttribute(randomNode.inNumPoints);
+        randomNode.addAttribute(randomNode.minVec);
+        randomNode.addAttribute(randomNode.maxVec);
+        randomNode.addAttribute(randomNode.outPoints);  
+
+        randomNode.attributeAffects(randomNode.inNumPoints, randomNode.outPoints);
+        randomNode.attributeAffects(randomNode.minVec, randomNode.outPoints);
+        randomNode.attributeAffects(randomNode.maxVec, randomNode.outPoints); 
 
     except:
         sys.stderr.write( ("Failed to create attributes of %s node\n", kPluginNodeTypeName) )
