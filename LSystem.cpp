@@ -217,6 +217,35 @@ void LSystem::processPy(unsigned int n,
     std::vector<Geometry> preFlowers;
 
 	process(n, preBranches, preFlowers);
+
+	for (int i = 0; i < preBranches.size(); i++)
+	{
+
+		// Convert branches into python branches
+		Branch currBranch = preBranches.at(i);
+		float sx = currBranch.first[0];
+		float sy = currBranch.first[1];
+		float sz = currBranch.first[2];
+		float ex = currBranch.second[0];
+		float ey = currBranch.second[1];
+		float ez = currBranch.second[2];
+		std::vector<float> pyBranch = { sx, sy, sz, ex, ey, ez };
+
+		branches.push_back(pyBranch);
+	}
+
+	for (int i = 0; i < preFlowers.size(); i++)
+	{
+
+		// Convert flowers into python flowers
+		Geometry currFlower = preFlowers.at(i);
+		float posx = currFlower.first[0];
+		float posy = currFlower.first[1];
+		float posz = currFlower.first[2];
+		std::vector<float> pyFlower = { posx, posy, posz };
+
+		flowers.push_back(pyFlower);
+	}
 }
 
 // LOOK: This is where the L-System creates the branches and the flowers.
