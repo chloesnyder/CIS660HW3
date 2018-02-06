@@ -66,12 +66,12 @@ class randomNode(OpenMayaMPx.MPxNode):
         if plug == randomNode.outPoints:
         
             inNumPointsData = data.inputValue(randomNode.inNumPoints);
-            inNumPointsValue = inNumPointsData.asFloat();
+            inNumPointsValue = inNumPointsData.asInt();
             
-            minVecData = data.inputValue(randomNode.minVector);
-            minVecData = minVecData.asFloat3();   
-            maxVecData = data.inputValue(randomNode.maxVector);
-            maxVecData = maxVecData.asFloat3();
+            minVecData = data.inputValue(randomNode.minVec);
+            minVecData = minVecData.asDouble3();   
+            maxVecData = data.inputValue(randomNode.maxVec);
+            maxVecData = maxVecData.asDouble3();
 
             pointsData = data.outputValue(randomNode.outPoints); 
             pointsAAD = OpenMaya.MFnArrayAttrsData(); 
@@ -103,25 +103,25 @@ def nodeInitializer():
     # TODO:: initialize the input and output attributes. Be sure to use the 
     #         MAKE_INPUT and MAKE_OUTPUT functions.
     
-    randomNode.inNumPoints = nAttr.create("numPoints", "n", OpenMaya.MFnNumericData.kFloat, 0.0);
+    randomNode.inNumPoints = nAttr.create("numPoints", "n", OpenMaya.MFnNumericData.kInt, 10);
     MAKE_INPUT(nAttr);
 
-    randomNode.minX = nAttr.create("minX", "miX", OpenMaya.MFnNumericData.kFloat, 0.0);
+    randomNode.minX = nAttr.create("minX", "miX", OpenMaya.MFnNumericData.kDouble, 0.0);
     MAKE_INPUT(nAttr);
-    randomNode.maxX = nAttr.create("maxX", "maX", OpenMaya.MFnNumericData.kFloat, 0.0);
+    randomNode.maxX = nAttr.create("maxX", "maX", OpenMaya.MFnNumericData.kDouble, 1.0);
     MAKE_INPUT(nAttr);
-    randomNode.minY = nAttr.create("minY", "miY", OpenMaya.MFnNumericData.kFloat, 0.0);
+    randomNode.minY = nAttr.create("minY", "miY", OpenMaya.MFnNumericData.kDouble, 0.0);
     MAKE_INPUT(nAttr);
-    randomNode.maxY = nAttr.create("maxY", "maY", OpenMaya.MFnNumericData.kFloat, 0.0);
+    randomNode.maxY = nAttr.create("maxY", "maY", OpenMaya.MFnNumericData.kDouble, 1.0);
     MAKE_INPUT(nAttr);
-    randomNode.minZ = nAttr.create("minZ", "miZ", OpenMaya.MFnNumericData.kFloat, 0.0);
+    randomNode.minZ = nAttr.create("minZ", "miZ", OpenMaya.MFnNumericData.kDouble, 0.0);
     MAKE_INPUT(nAttr);
-    randomNode.maxZ = nAttr.create("maxZ", "maZ", OpenMaya.MFnNumericData.kFloat, 0.0);
+    randomNode.maxZ = nAttr.create("maxZ", "maZ", OpenMaya.MFnNumericData.kDouble, 1.0);
     MAKE_INPUT(nAttr);
 
-    randomNode.minVec = nAttr.create("minVector", "minV", randomNode.minX, randomNode.minY, randomNode.minZ)
+    randomNode.minVec = nAttr.create("minVec", "minV", randomNode.minX, randomNode.minY, randomNode.minZ)
     MAKE_INPUT(nAttr);
-    randomNode.maxVec = nAttr.create("maxVector", "maxV", randomNode.maxX, randomNode.maxY, randomNode.maxZ)
+    randomNode.maxVec = nAttr.create("maxVec", "maxV", randomNode.maxX, randomNode.maxY, randomNode.maxZ)
     MAKE_INPUT(nAttr);
 
     randomNode.outPoints = tAttr.create("outPoints", "op", OpenMaya.MFnArrayAttrsData.kDynArrayAttrs)
