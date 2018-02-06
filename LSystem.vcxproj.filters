@@ -14,7 +14,7 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
     <Filter Include="Generated Files">
-      <UniqueIdentifier>{ae3cc1f4-813b-4781-9fd7-9b27ebc674d9}</UniqueIdentifier>
+      <UniqueIdentifier>{d9fc4098-1def-42e9-80b0-172da6d9939f}</UniqueIdentifier>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
   </ItemGroup>
@@ -41,6 +41,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="LSystem.i" />
+    <CustomBuild Include="LSystem.i" />
   </ItemGroup>
 </Project>
