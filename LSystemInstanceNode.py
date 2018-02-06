@@ -28,7 +28,7 @@ kPluginNodeTypeName = "LSystemInstanceNode"
 
 # Give the node a unique ID. Make sure this ID is different from all of your
 # other nodes!
-LSystemInstanceNode = OpenMaya.MTypeId(0x8704)
+LSystemInstanceNodeID = OpenMaya.MTypeId(0x8714)
 
 # Node definition
 class LSystemInstanceNode(OpenMayaMPx.MPxNode):
@@ -52,6 +52,13 @@ class LSystemInstanceNode(OpenMayaMPx.MPxNode):
     # compute
     def compute(self,plug,data):
         # TODO:: create the main functionality of the node. Your node should 
+        #         take in three floats for max position (X,Y,Z), three floats 
+        #         for min position (X,Y,Z), and the number of random points to
+        #         be generated. Your node should output an MFnArrayAttrsData 
+        #         object containing the random points. Consult the homework
+        #         sheet for how to deal with creating the MFnArrayAttrsData. 
+
+     # TODO:: create the main functionality of the node. Your node should 
         #         take in three floats for max position (X,Y,Z), three floats 
         #         for min position (X,Y,Z), and the number of random points to
         #         be generated. Your node should output an MFnArrayAttrsData 
@@ -122,6 +129,8 @@ class LSystemInstanceNode(OpenMayaMPx.MPxNode):
         outBranchesData.setMObject(outBranchesObject);
         outFlowersData.setMObject(outFlowersObject);
         data.setClean(plug)
+
+        data.setClean(plug)
     
 # initializer
 def nodeInitializer():
@@ -134,7 +143,7 @@ def nodeInitializer():
 
     LSystemInstanceNode.angle = nAttr.create("angle", "a", OpenMaya.MFnNumericData.kDouble, 0.0);
     MAKE_INPUT(nAttr);
-    LSystemInstanceNode.stepSize = nAttr.create("stepSize", "ss", OpenMaya.MFnNumericData.kDouble, 0.0);
+    LSystemInstanceNode.stepSize = nAttr.create("stepSize", "ss", OpenMaya.MFnNumericData.kDouble, 1.0);
     MAKE_INPUT(nAttr);
     LSystemInstanceNode.grammarFile = tAttr.create("grammarFile", "g", OpenMaya.MFnData.kString);
     MAKE_INPUT(nAttr);
@@ -183,7 +192,7 @@ def nodeCreator():
 def initializePlugin(mobject):
     mplugin = OpenMayaMPx.MFnPlugin(mobject)
     try:
-        mplugin.registerNode( kPluginNodeTypeName, LSystemInstanceNode, nodeCreator, nodeInitializer )
+        mplugin.registerNode( kPluginNodeTypeName, LSystemInstanceNodeID, nodeCreator, nodeInitializer )
     except:
         sys.stderr.write( "Failed to register node: %s\n" % kPluginNodeTypeName )
 
@@ -191,6 +200,6 @@ def initializePlugin(mobject):
 def uninitializePlugin(mobject):
     mplugin = OpenMayaMPx.MFnPlugin(mobject)
     try:
-        mplugin.deregisterNode( LSystemInstanceNode )
+        mplugin.deregisterNode( LSystemInstanceNodeID )
     except:
         sys.stderr.write( "Failed to unregister node: %s\n" % kPluginNodeTypeName )
