@@ -73,13 +73,13 @@ class randomNode(OpenMayaMPx.MPxNode):
             maxVecData = data.inputValue(randomNode.maxVector);
             maxVecData = maxVecData.asFloat3();
 
-            outPointsData = data.outputValue(randomNode.outPoints); 
-            outPointArrAttrData = OpenMaya.MFnArrayAttrsData(); 
-            outPointsObject = outPointArrAttrData.create();
+            pointsData = data.outputValue(randomNode.outPoints); 
+            pointsAAD = OpenMaya.MFnArrayAttrsData(); 
+            pointsObject = pointsAAD.create();
             
             # Create the vectors for position and id
-            positionArr = outPointArrAttrData.vectorArray("position");
-            idArray = outPointArrAttrData.doubleArray("id");
+            positionArray = pointsAAD.vectorArray("position");
+            idArray = pointsAAD.doubleArray("id");
             
             # Loop to fill the arrays: 
             for num in range(0, inNumPointsValue):
@@ -87,11 +87,11 @@ class randomNode(OpenMayaMPx.MPxNode):
                 sy = random.uniform(minVecData[1], maxVecData[1]);
                 sz = random.uniform(minVecData[2], maxVecData[2]);
                 
-                positionArr.append(OpenMaya.MVector(sx, sy, sz));
+                positionArray.append(OpenMaya.MVector(sx, sy, sz));
                 idArray.append(num);
             
             # Finally set the output data handle 
-            outPointsData.setMObject(outPointsObject);
+            pointsData.setMObject(pointsObject);
 
         data.setClean(plug)
     
@@ -147,6 +147,9 @@ def nodeInitializer():
 # creator
 def nodeCreator():
     return OpenMayaMPx.asMPxPtr( randomNode() )
+
+
+
 
 # initialize the script plug-in
 def initializePlugin(mobject):
