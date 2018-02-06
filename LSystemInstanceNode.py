@@ -1,4 +1,4 @@
-# randomNode.py
+     # randomNode.py
 #   Produces random locations to be used with the Maya instancer node.
 
 import sys
@@ -66,117 +66,119 @@ class LSystemInstanceNode(OpenMayaMPx.MPxNode):
         #         sheet for how to deal with creating the MFnArrayAttrsData. 
 
         #input data
-        angleData = data.inputValue(LSystemInstanceNode.angle);
-        stepSizeData = data.inputValue(LSystemInstanceNode.stepSize);
-        grammarFileData = data.inputValue(LSystemInstanceNode.grammarFile);
-        iterData = data.inputValue(LSystemInstanceNode.iterations);
+        angleData = data.inputValue(LSystemInstanceNode.angle)
+        stepSizeData = data.inputValue(LSystemInstanceNode.stepSize)
+        grammarFileData = data.inputValue(LSystemInstanceNode.grammarFile)
+        iterData = data.inputValue(LSystemInstanceNode.iterations)
 
-        angleValue = angleData.asDouble();
-        stepSizeValue = stepSizeData.asDouble();
-        grammarFileValue = grammarFileData.asString();
-        iterValue = iterData.asInt();
+        angleValue = angleData.asDouble()
+        stepSizeValue = stepSizeData.asDouble()
+        grammarFileValue = grammarFileData.asString()
+        iterValue = iterData.asInt()
        
         #output data
-        outBranchesData = data.outputValue(LSystemInstanceNode.outputBranches);
-        outBranchesAAD = OpenMaya.MFnArrayAttrsData();
-        outBranchesObject = outBranchesAAD.create();
+        outBranchesData = data.outputValue(LSystemInstanceNode.outputBranches)
+        outBranchesAAD = OpenMaya.MFnArrayAttrsData()
+        outBranchesObject = outBranchesAAD.create()
        
-        outFlowersData = data.outputValue(LSystemInstanceNode.outputFlowers);
-        outFlowersAAD = OpenMaya.MFnArrayAttrsData();
-        outFlowersObject = outFlowersAAD.create();
+        outFlowersData = data.outputValue(LSystemInstanceNode.outputFlowers)
+        outFlowersAAD = OpenMaya.MFnArrayAttrsData()
+        outFlowersObject = outFlowersAAD.create()
 
         #vectors for pos, id, scale, aim for branches and flowers
-        branchPosArr = outBranchesAAD.vectorArray("position");
-        branchIDArr = outBranchesAAD.doubleArray("id");
-        branchScaleArr = outBranchesAAD.vectorArray("scale");
-        branchAimArr = outBranchesAAD.vectorArray("aimDirection");
+        branchPosArr = outBranchesAAD.vectorArray("position")
+        branchIDArr = outBranchesAAD.doubleArray("id")
+        branchScaleArr = outBranchesAAD.vectorArray("scale")
+        branchAimArr = outBranchesAAD.vectorArray("aimDirection")
 
-        flowerPosArr = outFlowersAAD.vectorArray("position");
-        flowerIDArr = outFlowersAAD.doubleArray("id");
-        flowerScaleArr = outFlowersAAD.vectorArray("scale");
-        flowerAimArr = outFlowersAAD.vectorArray("aimDirection");
+        flowerPosArr = outFlowersAAD.vectorArray("position")
+        flowerIDArr = outFlowersAAD.doubleArray("id")
+        flowerScaleArr = outFlowersAAD.vectorArray("scale")
+        flowerAimArr = outFlowersAAD.vectorArray("aimDirection")
 
-        lsystem = LSystem.LSystem();
-        lsystem.loadProgram(str(grammarFileValue));
-        lsystem.setDefaultAngle(angleValue);
-        lsystem.setDefaultStep(stepSizeValue);
+        lsystem = LSystem.LSystem()
+        lsystem.loadProgram(str(grammarFileValue))
+        lsystem.setDefaultAngle(angleValue)
+        lsystem.setDefaultStep(stepSizeValue)
 
-        branches = LSystem.VectorPyBranch();
-        flowers = LSystem.VectorPyBranch();
+        branches = LSystem.VectorPyBranch()
+        flowers = LSystem.VectorPyBranch()
     
         for i in range (0, iterValue) :
-            currIter = lsystem.getIteration(i);
-            lsystem.processPy(i, branches, flowers);
+            currIter = lsystem.getIteration(i)
+            lsystem.processPy(i, branches, flowers)
 
         # fill branches and flowers 
         for j,branch in enumerate(branches):
-            start = OpenMaya.MVector(branch[0],branch[2],branch[1]); # switch z and y
-            end = OpenMaya.MVector(branch[3],branch[5],branch[4]);
-            aim = end - start;
-            branchPosArr.append(end);
-            branchIDArr.append(j);
-            branchScaleArr.append(OpenMaya.MVector(1,1,1));
-            branchAimArr.append(aim);
+            start = OpenMaya.MVector(branch[0],branch[2],branch[1]) # switch z and y
+            end = OpenMaya.MVector(branch[3],branch[5],branch[4])
+            aim = end - start
+            branchPosArr.append(end)
+            branchIDArr.append(j)
+            branchScaleArr.append(OpenMaya.MVector(1,1,1))
+            branchAimArr.append(aim)
 
         for k,flower in enumerate(flowers):
-            pos = OpenMaya.MVector(flower[0], flower[2], flower[1]);      
-            flowerPosArr.append(pos);
-            flowerIDArr.append(k);
-            flowerScaleArr.append(OpenMaya.MVector(1,1,1));
-            flowerAimArr.append(OpenMaya.MVector(1,1,1));
+            pos = OpenMaya.MVector(flower[0], flower[2], flower[1])      
+            flowerPosArr.append(pos)
+            flowerIDArr.append(k)
+            flowerScaleArr.append(OpenMaya.MVector(1,1,1))
+            flowerAimArr.append(OpenMaya.MVector(1,1,1))
 
 
-        outBranchesData.setMObject(outBranchesObject);
-        outFlowersData.setMObject(outFlowersObject);
+        outBranchesData.setMObject(outBranchesObject)
+        outFlowersData.setMObject(outFlowersObject)
         data.setClean(plug)
 
         data.setClean(plug)
     
 # initializer
 def nodeInitializer():
-    tAttr = OpenMaya.MFnTypedAttribute();
-    nAttr = OpenMaya.MFnNumericAttribute();
+    tAttr = OpenMaya.MFnTypedAttribute()
+    nAttr = OpenMaya.MFnNumericAttribute()
 
     # TODO:: initialize the input and output attributes. Be sure to use the 
     #         MAKE_INPUT and MAKE_OUTPUT functions.
     
 
-    LSystemInstanceNode.angle = nAttr.create("angle", "a", OpenMaya.MFnNumericData.kDouble, 0.0);
-    MAKE_INPUT(nAttr);
-    LSystemInstanceNode.stepSize = nAttr.create("stepSize", "ss", OpenMaya.MFnNumericData.kDouble, 1.0);
-    MAKE_INPUT(nAttr);
-    LSystemInstanceNode.grammarFile = tAttr.create("grammarFile", "g", OpenMaya.MFnData.kString);
-    MAKE_INPUT(nAttr);
-    LSystemInstanceNode.iterations = nAttr.create("iterations", "i", OpenMaya.MFnNumericData.kDouble, 0.0);
-    MAKE_INPUT(nAttr);
+    LSystemInstanceNode.angle = nAttr.create("angle", "a", OpenMaya.MFnNumericData.kDouble, 10.0)
+    MAKE_INPUT(nAttr)
+    LSystemInstanceNode.stepSize = nAttr.create("stepSize", "ss", OpenMaya.MFnNumericData.kDouble, 1.0)
+    MAKE_INPUT(nAttr)
+    stringData = OpenMaya.MFnStringData.create("C:\Users\SIG\Documents\GitHub\CIS660HW3\plants\simple1.txt")
+    LSystemInstanceNode.grammarFile = tAttr.create("grammarFile", "g", OpenMaya.MFnData.kString, stringData)
+    MAKE_INPUT(nAttr)
+    LSystemInstanceNode.iterations = nAttr.create("iterations", "i", OpenMaya.MFnNumericData.kDouble, 1.0)
+    MAKE_INPUT(nAttr)
         
-    LSystemInstanceNode.outputBranches = tAttr.create("outputBranches", "ob", OpenMaya.MFnArrayAttrsData.kDynArrayAttrs);
-    MAKE_OUTPUT(tAttr);
-    LSystemInstanceNode.outputFlowers = tAttr.create("outputFlowers", "of", OpenMaya.MFnArrayAttrsData.kDynArrayAttrs);
-    MAKE_OUTPUT(tAttr);
+    LSystemInstanceNode.outputBranches = tAttr.create("outputBranches", "ob", OpenMaya.MFnArrayAttrsData.kDynArrayAttrs)
+    MAKE_OUTPUT(tAttr)
+    LSystemInstanceNode.outputFlowers = tAttr.create("outputFlowers", "of", OpenMaya.MFnArrayAttrsData.kDynArrayAttrs)
+    MAKE_OUTPUT(tAttr)
 
     try:
         # TODO:: add the attributes to the node and set up the
         #         attributeAffects (addAttribute, and attributeAffects)
         print "Initialization!\n"
+     
 
-        LSystemInstanceNode.addAttribute(LSystemInstanceNode.angle);
-        LSystemInstanceNode.addAttribute(LSystemInstanceNode.stepSize);
-        LSystemInstanceNode.addAttribute(LSystemInstanceNode.iterations);
-        LSystemInstanceNode.addAttribute(LSystemInstanceNode.grammarFile);
-        LSystemInstanceNode.addAttribute(LSystemInstanceNode.outputBranches);     
-        LSystemInstanceNode.addAttribute(LSystemInstanceNode.outputFlowers);        
-
-        LSystemInstanceNode.attributeAffects(LSystemInstanceNode.angle,LSystemInstanceNode.outputBranches);
-        LSystemInstanceNode.attributeAffects(LSystemInstanceNode.angle,LSystemInstanceNode.outputFlowers);   
-        LSystemInstanceNode.attributeAffects(LSystemInstanceNode.stepSize,LSystemInstanceNode.outputBranches);
-        LSystemInstanceNode.attributeAffects(LSystemInstanceNode.stepSize,LSystemInstanceNode.outputFlowers);
-        LSystemInstanceNode.attributeAffects(LSystemInstanceNode.iterations,LSystemInstanceNode.outputBranches);
-        LSystemInstanceNode.attributeAffects(LSystemInstanceNode.iterations,LSystemInstanceNode.outputFlowers);
-        LSystemInstanceNode.attributeAffects(LSystemInstanceNode.grammarFile,LSystemInstanceNode.outputBranches);
-        LSystemInstanceNode.attributeAffects(LSystemInstanceNode.grammarFile,LSystemInstanceNode.outputFlowers);
+        LSystemInstanceNode.addAttribute(LSystemInstanceNode.angle)
+        LSystemInstanceNode.addAttribute(LSystemInstanceNode.stepSize)
+        LSystemInstanceNode.addAttribute(LSystemInstanceNode.iterations)
+        LSystemInstanceNode.addAttribute(LSystemInstanceNode.grammarFile)
+        LSystemInstanceNode.addAttribute(LSystemInstanceNode.outputBranches)     
+        LSystemInstanceNode.addAttribute(LSystemInstanceNode.outputFlowers)        
+        print "I'm here now \n"
+        LSystemInstanceNode.attributeAffects(LSystemInstanceNode.angle,LSystemInstanceNode.outputBranches)
+        LSystemInstanceNode.attributeAffects(LSystemInstanceNode.angle,LSystemInstanceNode.outputFlowers) 
+        LSystemInstanceNode.attributeAffects(LSystemInstanceNode.stepSize,LSystemInstanceNode.outputBranches)
+        LSystemInstanceNode.attributeAffects(LSystemInstanceNode.stepSize,LSystemInstanceNode.outputFlowers)
+        LSystemInstanceNode.attributeAffects(LSystemInstanceNode.iterations,LSystemInstanceNode.outputBranches)
+        LSystemInstanceNode.attributeAffects(LSystemInstanceNode.iterations,LSystemInstanceNode.outputFlowers)
+        LSystemInstanceNode.attributeAffects(LSystemInstanceNode.grammarFile,LSystemInstanceNode.outputBranches)
+        LSystemInstanceNode.attributeAffects(LSystemInstanceNode.grammarFile,LSystemInstanceNode.outputFlowers)
         
-
+         
         
     except:
         sys.stderr.write( ("Failed to create attributes of %s node\n", kPluginNodeTypeName) )
@@ -190,11 +192,33 @@ def nodeCreator():
 
 # initialize the script plug-in
 def initializePlugin(mobject):
+    print "I'm here\n"
     mplugin = OpenMayaMPx.MFnPlugin(mobject)
+   
     try:
         mplugin.registerNode( kPluginNodeTypeName, LSystemInstanceNodeID, nodeCreator, nodeInitializer )
     except:
         sys.stderr.write( "Failed to register node: %s\n" % kPluginNodeTypeName )
+
+    print "Before path\n"
+    path =  mplugin.loadPath() + "/NodeSetup.mel";
+    print "after path"
+    data = ''
+    print "Before open path"
+
+    with open(path, 'r') as myfile:
+        data=myfile.read().replace('\n', '')
+
+    print "Before execute"
+
+    OpenMaya.MGlobal.executeCommand(data, False, False)
+    print "Executed"
+
+
+
+
+
+
 
 # uninitialize the script plug-in
 def uninitializePlugin(mobject):
@@ -203,3 +227,4 @@ def uninitializePlugin(mobject):
         mplugin.deregisterNode( LSystemInstanceNodeID )
     except:
         sys.stderr.write( "Failed to unregister node: %s\n" % kPluginNodeTypeName )
+

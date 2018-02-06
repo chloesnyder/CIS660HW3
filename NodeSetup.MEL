@@ -1,0 +1,55 @@
+
+
+
+global proc option1()
+{
+    print "option1";
+    polySphere;
+    instancer;
+    createNode randomNode;
+    connectAttr pSphere1.matrix instancer1.inputHierarchy[0]; 
+    connectAttr randomNode1.outPoints instancer1.inputPoints; 
+}
+
+global proc option2()
+{
+	print "option2";
+
+	string $obj[] = `ls -sl`;
+	$item = $obj[0];
+
+    instancer;
+    createNode randomNode;
+    connectAttr ($item+".matrix") instancer1.inputHierarchy[0]; 
+    connectAttr randomNode1.outPoints instancer1.inputPoints; 
+}
+
+global proc option3()
+{
+	print "option3";
+
+	
+	polyCube;
+	instancer;
+	createNode LSystemInstanceNode;
+	connectAttr pCube1.matrix instancer1.inputHierarchy[0];
+	connectAttr LSystemInstanceNode1.outputBranches instancer1.inputPoints;
+
+	polySphere;
+	instancer;
+	connectAttr pSphere1.matrix instancer2.inputHierarchy[0];
+	connectAttr LSystemInstanceNode1.outputFlowers instancer2.inputPoints;
+}
+
+
+global proc option4()
+{
+	print "option4";
+}
+
+
+menu -parent MayaWindow -label "LSystemInstance" -tearOff true LSystemInstanceMenu;
+		menuItem -label "Option 1: create randomNode network" -command "option1();"; 
+		menuItem -label "Option 2: create randomNode network from object" -command "option2();"; 
+		menuItem -label "Option 3: create LSystemInstanceNode network" -command "option3();"; 
+		menuItem -label "Option 4: create LSystemInstanceNode network from object" -command "option4();"; 

@@ -108,15 +108,15 @@ def nodeInitializer():
 
     randomNode.minX = nAttr.create("minX", "miX", OpenMaya.MFnNumericData.kDouble, 0.0);
     MAKE_INPUT(nAttr);
-    randomNode.maxX = nAttr.create("maxX", "maX", OpenMaya.MFnNumericData.kDouble, 1.0);
+    randomNode.maxX = nAttr.create("maxX", "maX", OpenMaya.MFnNumericData.kDouble, 2.0);
     MAKE_INPUT(nAttr);
     randomNode.minY = nAttr.create("minY", "miY", OpenMaya.MFnNumericData.kDouble, 0.0);
     MAKE_INPUT(nAttr);
-    randomNode.maxY = nAttr.create("maxY", "maY", OpenMaya.MFnNumericData.kDouble, 1.0);
+    randomNode.maxY = nAttr.create("maxY", "maY", OpenMaya.MFnNumericData.kDouble, 2.0);
     MAKE_INPUT(nAttr);
     randomNode.minZ = nAttr.create("minZ", "miZ", OpenMaya.MFnNumericData.kDouble, 0.0);
     MAKE_INPUT(nAttr);
-    randomNode.maxZ = nAttr.create("maxZ", "maZ", OpenMaya.MFnNumericData.kDouble, 1.0);
+    randomNode.maxZ = nAttr.create("maxZ", "maZ", OpenMaya.MFnNumericData.kDouble, 2.0);
     MAKE_INPUT(nAttr);
 
     randomNode.minVec = nAttr.create("minVec", "minV", randomNode.minX, randomNode.minY, randomNode.minZ)
