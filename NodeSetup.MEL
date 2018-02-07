@@ -28,17 +28,20 @@ global proc option3()
 {
 	print "option3";
 
+	string $cube[] = `polyCube`;
+	string $sphere[] = `polySphere`;
+	string $inst1 = `instancer`;
+	string $inst2 = `instancer`;
+	string $node = `createNode LSystemInstanceNode`;
 	
-	polyCube;
-	instancer;
-	createNode LSystemInstanceNode;
-	connectAttr pCube1.matrix instancer1.inputHierarchy[0];
-	connectAttr LSystemInstanceNode1.outputBranches instancer1.inputPoints;
+	connectAttr($cube[0] + ".matrix") ($inst1 + ".inputHierarchy[0]");
+	connectAttr ($node + ".outputBranches") ($inst1 + ".inputPoints");
+	connectAttr($sphere[0] + ".matrix") ($inst2 + ".inputHierarchy[0]");
+	connectAttr ($node + ".outputFlowers") ($inst2 + ".inputPoints");
 
-	polySphere;
-	instancer;
-	connectAttr pSphere1.matrix instancer2.inputHierarchy[0];
-	connectAttr LSystemInstanceNode1.outputFlowers instancer2.inputPoints;
+	
+		
+	
 }
 
 

@@ -149,11 +149,11 @@ def nodeInitializer():
     MAKE_INPUT(nAttr)
     # "C:\Users\SIG\Documents\GitHub\CIS660HW3\plants\simple1.txt"
     
-   # stringData = OpenMaya.MFnStringData.create(kDefaultStringAttrValue)
-    #LSystemInstanceNode.grammarFile = tAttr.create("grammarFile", "g", OpenMaya.MFnData.kString, stringData)
-    LSystemInstanceNode.grammarFile = tAttr.create("grammarFile", "g", OpenMaya.MFnData.kString)
+    stringData = OpenMaya.MFnStringData().create(kDefaultStringAttrValue)
+    LSystemInstanceNode.grammarFile = tAttr.create("grammarFile", "g", OpenMaya.MFnData.kString, stringData)
+  #  LSystemInstanceNode.grammarFile = tAttr.create("grammarFile", "g", OpenMaya.MFnData.kString)
     MAKE_INPUT(nAttr)
-    LSystemInstanceNode.iterations = nAttr.create("iterations", "i", OpenMaya.MFnNumericData.kDouble, 1.0)
+    LSystemInstanceNode.iterations = nAttr.create("iterations", "i", OpenMaya.MFnNumericData.kDouble, 2.0)
     MAKE_INPUT(nAttr)
         
     LSystemInstanceNode.outputBranches = tAttr.create("outputBranches", "ob", OpenMaya.MFnArrayAttrsData.kDynArrayAttrs)
