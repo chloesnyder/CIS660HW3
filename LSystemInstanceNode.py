@@ -30,6 +30,8 @@ kPluginNodeTypeName = "LSystemInstanceNode"
 # other nodes!
 LSystemInstanceNodeID = OpenMaya.MTypeId(0x8714)
 
+kDefaultStringAttrValue = "C:\Users\SIG\Documents\GitHub\CIS660HW3\plants\simple1.txt"
+
 # Node definition
 class LSystemInstanceNode(OpenMayaMPx.MPxNode):
     # Declare class variables:
@@ -145,7 +147,9 @@ def nodeInitializer():
     MAKE_INPUT(nAttr)
     LSystemInstanceNode.stepSize = nAttr.create("stepSize", "ss", OpenMaya.MFnNumericData.kDouble, 1.0)
     MAKE_INPUT(nAttr)
-    stringData = OpenMaya.MFnStringData.create("C:\Users\SIG\Documents\GitHub\CIS660HW3\plants\simple1.txt")
+    # "C:\Users\SIG\Documents\GitHub\CIS660HW3\plants\simple1.txt"
+    
+    stringData = OpenMaya.MFnStringData.create(kDefaultStringAttrValue)
     LSystemInstanceNode.grammarFile = tAttr.create("grammarFile", "g", OpenMaya.MFnData.kString, stringData)
     MAKE_INPUT(nAttr)
     LSystemInstanceNode.iterations = nAttr.create("iterations", "i", OpenMaya.MFnNumericData.kDouble, 1.0)

@@ -44,7 +44,19 @@ global proc option3()
 
 global proc option4()
 {
-	print "option4";
+
+	string $obj[] = `ls -sl`;
+	$branch = $obj[0];
+	$flower = $obj[1];
+	
+	instancer;
+	createNode LSystemInstanceNode;
+	connectAttr ($branch+".matrix") instancer1.inputHierarchy[0];
+	connectAttr LSystemInstanceNode1.outputBranches instancer1.inputPoints;
+
+	instancer;
+	connectAttr ($flower+".matrix") instancer2.inputHierarchy[0];
+	connectAttr LSystemInstanceNode1.outputFlowers instancer2.inputPoints;
 }
 
 
