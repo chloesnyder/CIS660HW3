@@ -10,6 +10,7 @@ import maya.OpenMayaAnim as OpenMayaAnim
 import maya.OpenMayaMPx as OpenMayaMPx
 import maya.cmds as cmds
 import maya.mel as mel
+import math
 
 # Useful functions for declaring attributes as inputs or outputs.
 def MAKE_INPUT(attr):
@@ -95,8 +96,7 @@ class LSystemInstanceNode(OpenMayaMPx.MPxNode):
 
         flowerPosArr = outFlowersAAD.vectorArray("position")
         flowerIDArr = outFlowersAAD.doubleArray("id")
-        flowerScaleArr = outFlowersAAD.vectorArray("scale")
-        flowerAimArr = outFlowersAAD.vectorArray("aimDirection")
+
 
         lsystem = LSystem.LSystem()
         lsystem.loadProgram(str(grammarFileValue))
@@ -106,27 +106,22 @@ class LSystemInstanceNode(OpenMayaMPx.MPxNode):
         branches = LSystem.VectorPyBranch()
         flowers = LSystem.VectorPyBranch()
     
-        for i in range (0, iterValue) :
-            currIter = lsystem.getIteration(i)
-            lsystem.processPy(i, branches, flowers)
+   
+        lsystem.processPy(iterValue, branches, flowers)
 
         # fill branches and flowers 
         for j,branch in enumerate(branches):
-            start = OpenMaya.MVector(branch[0],branch[2],branch[1]) # switch z and y
-            end = OpenMaya.MVector(branch[3],branch[5],branch[4])
-            aim = end - start
-            branchPosArr.append(end)
+            aim = OpenMaya.MVector(branch[3] - branch[0], branch[4] - branch[1],  branch[5] - branch[2])
+            branchPosArr.append(OpenMaya.MVector((branch[3] + branch[0])/2.0, (branch[4] + branch[1])/2.0, (branch[5] + branch[2])/2.0))
             branchIDArr.append(j)
-            branchScaleArr.append(OpenMaya.MVector(1,1,1))
+            aimlength = math.sqrt((branch[3] - branch[0])*(branch[3] - branch[0]) + (branch[5] - branch[2])*(branch[5] - branch[2]) + (branch[4] - branch[1])*(branch[4] - branch[1]))
+            branchScaleArr.append(OpenMaya.MVector(aimlength, 1.0, 1.0))
             branchAimArr.append(aim)
 
         for k,flower in enumerate(flowers):
-            pos = OpenMaya.MVector(flower[0], flower[2], flower[1])      
+            pos = OpenMaya.MVector(flower[0], flower[1], flower[2])      
             flowerPosArr.append(pos)
             flowerIDArr.append(k)
-            flowerScaleArr.append(OpenMaya.MVector(1,1,1))
-            flowerAimArr.append(OpenMaya.MVector(1,1,1))
-
 
         outBranchesData.setMObject(outBranchesObject)
         outFlowersData.setMObject(outFlowersObject)
@@ -147,13 +142,11 @@ def nodeInitializer():
     MAKE_INPUT(nAttr)
     LSystemInstanceNode.stepSize = nAttr.create("stepSize", "ss", OpenMaya.MFnNumericData.kDouble, 1.0)
     MAKE_INPUT(nAttr)
-    # "C:\Users\SIG\Documents\GitHub\CIS660HW3\plants\simple1.txt"
     
     stringData = OpenMaya.MFnStringData().create(kDefaultStringAttrValue)
     LSystemInstanceNode.grammarFile = tAttr.create("grammarFile", "g", OpenMaya.MFnData.kString, stringData)
-  #  LSystemInstanceNode.grammarFile = tAttr.create("grammarFile", "g", OpenMaya.MFnData.kString)
     MAKE_INPUT(nAttr)
-    LSystemInstanceNode.iterations = nAttr.create("iterations", "i", OpenMaya.MFnNumericData.kDouble, 2.0)
+    LSystemInstanceNode.iterations = nAttr.create("iterations", "i", OpenMaya.MFnNumericData.kInt, 2)
     MAKE_INPUT(nAttr)
         
     LSystemInstanceNode.outputBranches = tAttr.create("outputBranches", "ob", OpenMaya.MFnArrayAttrsData.kDynArrayAttrs)
